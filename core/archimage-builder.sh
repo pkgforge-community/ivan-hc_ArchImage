@@ -405,6 +405,10 @@ _run_quick_sharun() {
 
 	# Run quick-sharun on the main binary ("$BIN" variable)
 	_JUNEST_CMD -- ./quick-sharun /usr/bin/"$BIN"*
+	# Libreoffice specific path
+	if echo "$APP" | grep -q libreoffice; then
+		_JUNEST_CMD -- ./quick-sharun /usr/lib/libreoffice/program/soffice*
+	fi
 
 	# This function is executed if the "$extra_bins" variable is set.
 	# Each keyword will be searched in /usr/bin and considered a program from which to collect the libraries needed to run it.
