@@ -124,7 +124,18 @@ _install_packages() {
 		_JUNEST_CMD -- yay --noconfirm -S python # to force one Python version and prevent modules from being installed in different directories (e.g. "mesonbuild")
 	fi
 	if [ -n "$DEPENDENCES" ]; then
-		_JUNEST_CMD -- yay --noconfirm -S $DEPENDENCES
+		# Install dependencies one by one
+		for d in $DEPENDENCES; do
+			if ! _JUNEST_CMD -- yay -Qs "$d"; then
+				_JUNEST_CMD -- yay --noconfirm -S "$d"
+			fi
+		done
+		# Reinstall dependencies one by one
+		for d in $DEPENDENCES; do
+			if ! _JUNEST_CMD -- yay -Qs "$d"; then
+				_JUNEST_CMD -- yay --noconfirm -S "$d"
+			fi
+		done
 	fi
 	if [ -n "$APP" ]; then
 		_JUNEST_CMD -- yay --noconfirm -S alsa-lib binutils gtk3 hicolor-icon-theme xapp xdg-utils xorg-server-xvfb
